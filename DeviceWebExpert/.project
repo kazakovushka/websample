@@ -3,6 +3,7 @@
 	<name>DeviceWebExpert</name>
 	<comment></comment>
 	<projects>
+		<project>PalnaDAO</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

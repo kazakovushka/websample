@@ -1,3 +1,5 @@
+
+<%@page import="java.util.logging.Logger"%>
 <%@page import="ru.rtec.lighting.data.model.exceptions.DaoExceptions"%>
 <%@page import="ru.rtec.lighting.data.model.ServerDAO"%>
 <%@page import="java.util.ArrayList"%>
@@ -12,12 +14,13 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<%!List<Device> devices=new ArrayList<Device>(); 
-		String descr; 
-		boolean alive;
+<%!Logger l=Logger.getLogger("allDevice"); %>
+	<%List<Device> devices=new ArrayList<Device>();		
 		%>
 	<% try{ 
-		devices=ServerDAO.getInstance().getDevice();
+		
+		 devices=ServerDAO.getInstance().getDevice();
+		l.info(devices.toString());
 			}
 			catch(DaoExceptions exc){
 				exc.printStackTrace();
