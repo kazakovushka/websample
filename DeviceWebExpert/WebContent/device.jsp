@@ -16,17 +16,22 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/my.css" >
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
 	<%
-		Device device = ServerDAO.getInstance().getDeviceById(
-				Long.valueOf(request.getParameter("sn")));//new Device(1l, true, "test dev");
+		Device device = new Device(1l, true, "test dev");
 	%>
+	<%--ServerDAO.getInstance().getDeviceById(
+				Long.valueOf(request.getParameter("sn"))); --%>
+	<%--List<Parameter> params = ServerDAO.getInstance().getDeviceParameters(device); --%>
 	<%!Logger l = Logger.getLogger("device.jsp");%>
+
+	<h4><%=request.getParameter("sn")%></h4>
 	<%
-		List<Parameter> ww = new ArrayList<Parameter>();
+		List<Parameter> params = new ArrayList<Parameter>();
 		Parameter pw = new BooleanParameter("p1", false);
 		pw.setTimestamp(new Date());
 		pw.setTu(false);
@@ -36,43 +41,54 @@
 		dp.setTimestamp(new Date());
 		dp.setTu(true);
 		dp.setQuality(200);
-		ww.add(pw);
-		ww.add(dp);
-		device.setDeviceParameters(ww);
-		l.info("log2" + device.getDeviceParameters());
-	%>
-	<h1><%=request.getParameter("sn")%></h1>
-	<%
-		List<Parameter> params = device.getDeviceParameters();
+		params.add(pw);
+		params.add(dp);
+		device.setDeviceParameters(params);
 		l.info("log3" + params);
 	%>
 
 	<h2>Блоки расширения</h2>
+	<div >
 	<table>
 
 		<tr>
 			<th>Номер</th>
 			<th>Описание</th>
 		</tr>
-		<tr>
+		
+		<%-- ServerDAO.getInstance()
+						.getExtBlockForDevice(device);--%>
 			<%
-				List<ExtendsBlock> blocks = ServerDAO.getInstance()
-						.getExtBlockForDevice(device);
+				List<ExtendsBlock> blocks = new ArrayList<ExtendsBlock>();
+				ExtendsBlock b1=new ExtendsBlock(1,new Device());
+				ExtendsBlock b2=new ExtendsBlock(2,new Device());
+				ExtendsBlock b3=new ExtendsBlock(3,new Device());
+				ExtendsBlock b4=new ExtendsBlock(4,new Device());
+				ExtendsBlock b5=new ExtendsBlock(5,new Device());
+				blocks.add(b1);
+				blocks.add(b2);
+				blocks.add(b3);
+				blocks.add(b4);
+				blocks.add(b5);
+				device.setExtendsBloks(blocks);
+				
 			%>
 			<%
-				for (ExtendsBlock block : blocks) {
+				for (ExtendsBlock block : device.getExtendsBloks()) {
 			%>
-			<td><a href="block.jsp?bn=<%=block.getBlockId()%>">
-			<%=block.getNumberBlock()%></a></td>
+			<tr>
+			<td><a href="block.jsp?bn=<%=block.getNumberBlock()%>"> <%=block.getNumberBlock()%></a></td>
 			<td><%=block.getNumberBlock()%></td>
 			<%
 				}
 			%>
 		</tr>
 	</table>
+	</div>
 
 
 	<h2>Параметры устройства</h2>
+	<div >
 	<table>
 
 		<tr>
@@ -83,7 +99,7 @@
 			<th>ТУ</th>
 		</tr>
 		<%
-			for (Parameter parameter : params) {
+			for (Parameter parameter : device.getDeviceParameters()) {
 				l.info("param=" + parameter);
 		%>
 		<tr>
@@ -96,5 +112,6 @@
  %></td>
 		</tr>
 	</table>
+	</div>
 </body>
 </html>
